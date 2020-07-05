@@ -8,18 +8,23 @@ public class Player : Character
     private bool isGrounded = true;
     private int extraJumpsCount = 0;
     private Rigidbody playerRb;
+    private int stamina;
 
     public float moveSpeed = 15.0f;
     public float jumpForce = 10.0f;
     public Text healthText;
+    public Text staminaText;
 
     public void Start()
     {
-        Health = 100;
+        Health = 6;
+        stamina = 100;
         playerRb = GetComponent<Rigidbody>();
-        StartCoroutine(ReduceHealth());
+        UpdateHealthUI();
+        UpdateStaminaUI();
+        //StartCoroutine(ReduceHealth());
     }
-    public void Update()
+    void Update()
     {
         if (Input.GetKey(KeyCode.A))
         {
@@ -48,7 +53,7 @@ public class Player : Character
     {
         while (true) {
             Health--;
-            UpdateHealth();
+            UpdateHealthUI();
             yield return new WaitForSeconds(1);
         }
     }
@@ -65,23 +70,6 @@ public class Player : Character
             isGrounded = true;
             extraJumpsCount = 0;
         }
-        if (obj.CompareTag("Collectable"))
-        {
-            int award = obj.GetComponent<Collectable>().GetAward();
-            Heal(award);
-            Destroy(obj);
-        }
-    }
-
-    private void Heal(int health)
-    {
-        Health += health;
-        UpdateHealth();
-    }
-
-    private void UpdateHealth()
-    {
-        healthText.text = $"HP: {Health}";
     }
 
     private void OnCollisionExit(Collision collision)
@@ -90,5 +78,27 @@ public class Player : Character
         {
             isGrounded = false;
         }
+    }
+
+    public void UpdateStamina(int value)
+    {
+        stamina += value;
+        UpdateStaminaUI();
+    }
+
+    public override void UpdateHealth(int value)
+    {
+        Health += value;
+        UpdateHealthUI();
+    }
+
+    public void UpdateHealthUI()
+    {
+        healthText.text = $"HP: {Health}";
+    }
+
+    private void UpdateStaminaUI()
+    {
+        staminaText.text = $"Stamina: {stamina}";
     }
 }

@@ -15,4 +15,9 @@ public class Character : MonoBehaviour, IDamagable
         }
         Health -= damage;
     }
+
+    public virtual void UpdateHealth(int value)
+    {
+        Health = value;
+    }
 }

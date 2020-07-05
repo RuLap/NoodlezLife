@@ -5,29 +5,29 @@ using UnityEngine.UI;
 
 public class Player : Character
 {
+    private const float maxHealth = 75;
+    private const float maxMana = 50;
     private bool isGrounded = true;
     private int extraJumpsCount = 0;
     private Rigidbody playerRb;
-    private float stamina;
+    private float mana;
+    private HealthSystem HP;
+    private ManaScript MP;
 
     public float moveSpeed = 15.0f;
     public float jumpForce = 10.0f;
-    public Text healthText;
-    public Text staminaText;
-    private HealthSystem HP;
+
     private void Awake()
     {
         HP = GameObject.Find("HealthBar").GetComponent<HealthSystem>();//Ищем наш хп бар
+        MP = GameObject.Find("ManaBar").GetComponent<ManaScript>();
     }
 
     public void Start()
     {
-        Health = 6;
-        stamina = 100;
+        Health = maxHealth;
+        mana = maxMana;
         playerRb = GetComponent<Rigidbody>();
-        UpdateHealthUI();
-        UpdateStaminaUI();
-        //StartCoroutine(ReduceHealth());
     }
     void Update()
     {
@@ -54,22 +54,19 @@ public class Player : Character
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
-            HP.changeHealth(-12.5f);
+            UpdateHealth(-12.5f);
+            //HP.changeHealth(-12.5f);
         }
         if (Input.GetKeyDown(KeyCode.G))
         {
             HP.addNewHealth();
         }
-    }
-
-    IEnumerator ReduceHealth()
-    {
-        while (true) {
-            Health--;
-            UpdateHealthUI();
-            yield return new WaitForSeconds(1);
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            UpdateStamina(-6.7f);
         }
     }
+
     protected void Move(Vector3 side)
     {
         transform.Translate(side * Time.deltaTime * moveSpeed);
@@ -95,23 +92,17 @@ public class Player : Character
 
     public void UpdateStamina(float value)
     {
-        stamina += value;
-        UpdateStaminaUI();
+        mana += value;
+        if (mana > maxMana) mana = maxMana;
+        Debug.Log(mana);
+        MP.updateMana(mana);
     }
 
     public override void UpdateHealth(float value)
     {
         Health += value;
-        HP.changeHealth(value);
-    }
-
-    public void UpdateHealthUI()
-    {
-        healthText.text = $"HP: {Health}";
-    }
-
-    private void UpdateStaminaUI()
-    {
-        staminaText.text = $"Stamina: {stamina}";
+        if (Health > maxHealth) Health = maxHealth;
+        Debug.Log(Health);
+        HP.changeHealth(Health);
     }
 }

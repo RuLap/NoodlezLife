@@ -18,7 +18,7 @@ public class HealthSystem : MonoBehaviour
     }
     public void changeHealth(float HP)
     {
-        currentHP += HP;
+        currentHP = HP;
         float hpForImages = currentHP;
         for(int i = 0; i < hpImages.Count; i++)
         {

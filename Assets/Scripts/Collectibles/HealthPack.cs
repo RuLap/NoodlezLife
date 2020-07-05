@@ -7,7 +7,7 @@ public class HealthPack : Collectable
     // Start is called before the first frame update
     void Start()
     {
-        weight = 1;
+        weight = 12.5f;
         type = CollectableType.Health;
     }
 

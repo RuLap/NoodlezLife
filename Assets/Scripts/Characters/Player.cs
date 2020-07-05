@@ -8,12 +8,17 @@ public class Player : Character
     private bool isGrounded = true;
     private int extraJumpsCount = 0;
     private Rigidbody playerRb;
-    private int stamina;
+    private float stamina;
 
     public float moveSpeed = 15.0f;
     public float jumpForce = 10.0f;
     public Text healthText;
     public Text staminaText;
+    private HealthSystem HP;
+    private void Awake()
+    {
+        HP = GameObject.Find("HealthBar").GetComponent<HealthSystem>();//Ищем наш хп бар
+    }
 
     public void Start()
     {
@@ -46,6 +51,14 @@ public class Player : Character
                 playerRb.velocity = Vector3.up * jumpForce;
                 extraJumpsCount++;
             }
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            HP.changeHealth(-12.5f);
+        }
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            HP.addNewHealth();
         }
     }
 
@@ -80,16 +93,16 @@ public class Player : Character
         }
     }
 
-    public void UpdateStamina(int value)
+    public void UpdateStamina(float value)
     {
         stamina += value;
         UpdateStaminaUI();
     }
 
-    public override void UpdateHealth(int value)
+    public override void UpdateHealth(float value)
     {
         Health += value;
-        UpdateHealthUI();
+        HP.changeHealth(value);
     }
 
     public void UpdateHealthUI()

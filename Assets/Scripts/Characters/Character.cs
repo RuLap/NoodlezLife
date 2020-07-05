@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour, IDamagable
 {
-    protected int Health { get; set; }
+    protected float Health { get; set; }
 
     public void ApplyDamage(int damage)
     {
@@ -16,7 +16,7 @@ public class Character : MonoBehaviour, IDamagable
         Health -= damage;
     }
 
-    public virtual void UpdateHealth(int value)
+    public virtual void UpdateHealth(float value)
     {
         Health = value;
     }

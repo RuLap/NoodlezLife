@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Collectable : MonoBehaviour
 {
-    protected int weight;
+    protected float weight;
     protected CollectableType type;
-    public int GetAward() 
+    public float GetAward() 
     {
         return weight;
     }

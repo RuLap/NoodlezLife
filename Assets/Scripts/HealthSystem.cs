@@ -22,7 +22,6 @@ public class HealthSystem : MonoBehaviour
         float hpForImages = currentHP;
         for(int i = 0; i < hpImages.Count; i++)
         {
-            Debug.Log(hpForImages >= 25);
             if (hpForImages >= 25)
                 hpImages[i].fillAmount = 1.0f;
             else

@@ -13,9 +13,15 @@ public class Player : Character
     private float mana;
     private HealthSystem HP;
     private ManaScript MP;
+    private CharacterController controller;
+    private Vector3 velocity;
+    public float gravity = -9.8f;
 
-    public float moveSpeed = 15.0f;
-    public float jumpForce = 10.0f;
+    public float moveSpeed = 8.0f;
+    public float jumpForce = 3.5f;
+    public Transform groundcheck;
+    public float groundDistance = 0.4f;
+    public LayerMask groundMask;
 
     private void Awake()
     {
@@ -28,34 +34,39 @@ public class Player : Character
         Health = maxHealth;
         mana = maxMana;
         playerRb = GetComponent<Rigidbody>();
+        controller = GetComponent<CharacterController>();
     }
     void Update()
     {
-        if (Input.GetKey(KeyCode.A))
+        isGrounded = Physics.CheckSphere(groundcheck.position, groundDistance, groundMask);
+        if (isGrounded && velocity.y < 0)
         {
-            Move(Vector3.left);
+            velocity.y = -2f;
+            extraJumpsCount = 0;
         }
-        if (Input.GetKey(KeyCode.D))
-        {
-            Move(Vector3.right);
-        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (isGrounded)
             {
-                playerRb.velocity = Vector3.up * jumpForce;
+                velocity.y = Mathf.Sqrt(jumpForce * -2 * gravity);
                 return;
             }
             if(extraJumpsCount < 1)
             {
-                playerRb.velocity = Vector3.up * jumpForce;
+                velocity.y = Mathf.Sqrt(jumpForce * -2 * gravity);
                 extraJumpsCount++;
             }
         }
+        float x = Input.GetAxis("Horizontal");
+        Vector3 move = transform.right * x;
+        controller.Move(move * moveSpeed * Time.deltaTime);
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
+
         if (Input.GetKeyDown(KeyCode.F))
         {
             UpdateHealth(-12.5f);
-            //HP.changeHealth(-12.5f);
         }
         if (Input.GetKeyDown(KeyCode.G))
         {
@@ -94,7 +105,6 @@ public class Player : Character
     {
         mana += value;
         if (mana > maxMana) mana = maxMana;
-        Debug.Log(mana);
         MP.updateMana(mana);
     }
 
@@ -102,7 +112,6 @@ public class Player : Character
     {
         Health += value;
         if (Health > maxHealth) Health = maxHealth;
-        Debug.Log(Health);
         HP.changeHealth(Health);
     }
 }

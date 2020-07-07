@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2936033612117353170}
+  - component: {fileID: -662689731651068946}
   m_Layer: 0
   m_Name: HealthPack
   m_TagString: Untagged
@@ -31,6 +32,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &-662689731651068946
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5873786115928298904}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.1299887, y: 0.40979147, z: 1.8397683}
+  m_Center: {x: -0.055820704, y: 0.94904995, z: -0.0506348}
 --- !u!1 &8942755653265845548
 GameObject:
   m_ObjectHideFlags: 0

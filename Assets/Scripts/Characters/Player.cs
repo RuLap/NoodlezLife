@@ -15,8 +15,9 @@ public class Player : Character
     private ManaScript MP;
     private CharacterController controller;
     private Vector3 velocity;
-    public float gravity = -9.8f;
+    private bool isImmortal = false;
 
+    public float gravity = -9.8f;
     public float moveSpeed = 8.0f;
     public float jumpForce = 3.5f;
     public Transform groundcheck;
@@ -110,8 +111,19 @@ public class Player : Character
 
     public override void UpdateHealth(float value)
     {
+        if (isImmortal && value < 0) return;
         Health += value;
         if (Health > maxHealth) Health = maxHealth;
         HP.changeHealth(Health);
+    }
+
+    public IEnumerator Immortal()
+    {
+        if (!isImmortal)
+        {
+            isImmortal = true;
+            yield return new WaitForSecondsRealtime(2);
+            isImmortal = false;
+        }
     }
 }

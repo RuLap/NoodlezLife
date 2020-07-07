@@ -33,7 +33,7 @@ public class ToxicCloud : MonoBehaviour
         while (playerInCloud==true)
         {
             player.UpdateHealth(-5f);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSecondsRealtime(1);
         }
     }
 }

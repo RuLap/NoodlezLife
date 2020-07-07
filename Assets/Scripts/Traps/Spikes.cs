@@ -4,47 +4,18 @@ using UnityEngine;
 
 public class Spikes : MonoBehaviour
 {
-    private bool isOnUp = true;
-    // Start is called before the first frame update
-    void Start()
-    {
-        StartCoroutine(MoveSpikes());
-    }
+    private float kickPower = 50.0f;
 
-    IEnumerator MoveSpikes()
+    private void OnTriggerEnter(Collider other)
     {
-        while (true)
+        if (other.gameObject.CompareTag("Ground"))
         {
-            if (isOnUp)
-            {
-                MoveDown();
-                yield return new WaitForSecondsRealtime(2);
-            }
-            else
-            {
-                MoveUp();
-                yield return new WaitForSecondsRealtime(2);
-            }
+            other.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
-    }
-
-    private void MoveDown()
-    {
-        transform.position = transform.position + new Vector3(0, -10, 0);
-        isOnUp = false;
-    }
-
-    private void MoveUp()
-    {
-        transform.position = transform.position + new Vector3(0, 10, 0);
-        isOnUp = true;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.TryGetComponent<Player>(out Player player))
+        if (other.gameObject.TryGetComponent<Player>(out Player player))
         {
             player.UpdateHealth(-12.5f);
+            StartCoroutine(player.Immortal());
         }
     }
 }
